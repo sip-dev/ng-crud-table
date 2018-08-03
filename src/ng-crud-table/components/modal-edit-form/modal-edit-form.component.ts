@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {ModalComponent} from '../modal/modal.component';
 import {DataManager} from '../../base';
 
@@ -9,8 +9,14 @@ import {DataManager} from '../../base';
 export class ModalEditFormComponent implements OnInit {
 
   @Input() public dataManager: DataManager;
+  @Input() public detailView: boolean;
+  @Input() public isNewItem: boolean;
+
+  @Output() loaded: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('childModal') childModal: ModalComponent;
+
+  public formValid: boolean = true;
 
   constructor() {
   }
@@ -19,8 +25,8 @@ export class ModalEditFormComponent implements OnInit {
   }
 
   modalTitle() {
-    if (!this.dataManager.detailView) {
-      return this.dataManager.isNewItem ? this.dataManager.messages.titleCreate :
+    if (!this.detailView) {
+      return this.isNewItem ? this.dataManager.messages.titleCreate :
         this.dataManager.messages.titleUpdate;
     } else {
       return this.dataManager.messages.titleDetailView;
@@ -28,12 +34,11 @@ export class ModalEditFormComponent implements OnInit {
   }
 
   save() {
-    this.dataManager.saveRow();
-    this.childModal.hide();
-  }
-
-  delete() {
-    this.dataManager.deleteRow();
+    if (this.isNewItem) {
+      this.dataManager.create(this.dataManager.item);
+    } else {
+      this.dataManager.update(this.dataManager.item);
+    }
     this.childModal.hide();
   }
 
@@ -43,6 +48,10 @@ export class ModalEditFormComponent implements OnInit {
 
   public close() {
     this.childModal.hide();
+  }
+
+  onFormValid(event: any) {
+    this.formValid = event;
   }
 
 }

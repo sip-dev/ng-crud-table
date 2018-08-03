@@ -35,6 +35,7 @@ export class PlayersComponent {
             frozen: true,
             resizeable: false,
             formHidden: true,
+            isPrimaryKey: true,
         },
         {
             title: 'Name', 
@@ -113,7 +114,6 @@ export class PlayersComponent {
     public settings: Settings = {
         api: 'http://host3/players',
         crud: true,
-        primaryKeys: ['id'],
         tableWidth: 820,
         bodyHeight: 380,
         multipleSort: true
@@ -164,7 +164,7 @@ export class DataTableDemoComponent {
 * Row Grouping (multiple columns)
 * Summary Row (aggregation on a column)
 * Live Updates
-* Virtual scroll
+* Virtual scroll with dynamic row height
 * Header and Cell Templates
 * Keyboard navigation
 * Export Data to CSV
@@ -191,7 +191,7 @@ interface DataSource {
 | name             | string     | null    |             |
 | sortable         | boolean    | true    |             |
 | filter           | boolean    | true    |             |
-| options          | SelectOption[] / Function | null | |
+| options          | SelectOption[] | null | |
 | optionsUrl       | string     | null    |             |
 | width            | number     | null    |             |
 | frozen           | boolean    | false   |             |
@@ -201,14 +201,17 @@ interface DataSource {
 | resizeable       | boolean    | true    |             |
 | dependsColumn    | string     | null    |             |
 | cellTemplate     | TemplateRef | null   |             |
+| headerCellTemplate | TemplateRef | null |             |
 | formHidden       | boolean    | false   |             |
 | tableHidden      | boolean    | false   |             |
 | cellClass        | string / Function | null |         |
+| isPrimaryKey     | boolean    | false   |             |
 | keyColumn        | string     | null    |             |
 | selectionLimit   | number     | 1       |             |
 | minWidth         | number     | 50      |             |
 | maxWidth         | number     | 500     |             |
 | aggregation      | sum / average / max / min / count | null |             |
+| filterValuesFunc | (columnName: string) => Promise<SelectOption[]> | null |             |
 
 ### Settings
 
@@ -216,7 +219,6 @@ interface DataSource {
 |------------------|------------|---------|-------------|
 | api              | string     | null    |             |
 | crud             | boolean    | false   |             |
-| primaryKeys      | string[]   | null    |             |
 | tableWidth       | number     | null    |             |
 | bodyHeight       | number     | null    |             |
 | sortable         | boolean    | true    |             |
@@ -243,6 +245,8 @@ interface DataSource {
 | contextMenu      | boolean    | false   | event       |
 | exportAction     | boolean    | false   | csv         |
 | editMode         | editCellOnDblClick / editProgrammatically | editCellOnDblClick |             |
+| actionColumnWidth | number    | 40      | px, 0 - hide |
+| rowActionTemplate | TemplateRef | null  |              |
 
 ```typescript
 interface SelectOption {

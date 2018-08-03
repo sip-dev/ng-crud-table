@@ -5,7 +5,6 @@ import {Constants} from './constants';
 export class Settings {
   public api?: string;
   public crud?: boolean;
-  public primaryKeys?: string[];
   public tableWidth?: number;
   public bodyHeight?: number;
   public sortable?: boolean = true;
@@ -32,6 +31,8 @@ export class Settings {
   public contextMenu?: boolean;
   public exportAction?: boolean;
   public editMode?: EditMode = Constants.editCellOnDblClick;
+  public actionColumnWidth?: number = 40;
+  public rowActionTemplate?: TemplateRef<any>;
 
   constructor(init: Partial<Settings>) {
     if (init) {

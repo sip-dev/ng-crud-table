@@ -171,11 +171,7 @@
   border-left: 1px solid #c6c6c6;
 }
 
-.datatable-group-header .datatable-row-left {
-  border-left: none;
-}
-
-.datatable-filter + .datatable-body {
+.dt-dropdown + .datatable-body {
   border-top: 1px solid #c6c6c6;
 }
 
@@ -239,12 +235,21 @@
 
 .cell-editor input:focus,
 .cell-editor select:focus {
-  border: 2px solid #5b9bd5;
+  border: 1px solid #5b9bd5;
 }
 
 .cell-editor select {
   cursor: pointer;
   background: #ffffff;
+}
+
+.cell-error input:focus,
+.cell-error select:focus {
+  border: 1px solid red;
+}
+
+.cell-error {
+  box-shadow:0px 0px 0px 1px red inset;
 }
 
 .row-selected {
@@ -273,10 +278,10 @@
 .datatable-group-header {
   border-right: solid 1px #D9D8D9;
   border-bottom: solid 1px #D9D8D9;
-  border-left: solid 1px #D9D8D9;
-  height: 30px;
-  line-height: 30px;
-  padding: 0 3px;
+}
+
+.datatable-group-header .datatable-body-cell {
+  border: none;
 }
 
 .datatable-group-header,

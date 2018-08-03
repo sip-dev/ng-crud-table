@@ -33,7 +33,6 @@ export class ModalFormDemoComponent implements OnInit {
   public settings: Settings = <Settings>{
     api: 'assets/players.json',
     crud: true,
-    primaryKeys: ['id'],
   };
 
   @ViewChild('modalEditForm') modalEditForm: ModalEditFormComponent;
@@ -71,13 +70,6 @@ export class ModalFormDemoComponent implements OnInit {
     this.columns[3].options = null;
     this.columns[3].optionsUrl = 'assets/options.json';
 
-    this.columns[7].type = 'select-popup';
-    this.columns[7].optionsUrl = 'assets/accounts.json';
-    this.columns[7].keyColumn = 'account_id';
-
-    this.columns[9].formHidden = true;
-    this.columns[9].tableHidden = true;
-
     this.service = new DemoService(this.http);
     this.dataManager = new DataManager(this.columns, this.settings, this.service);
   }
@@ -95,12 +87,14 @@ export class ModalFormDemoComponent implements OnInit {
   }
 
   createItem() {
-    this.dataManager.clearItem();
+    this.dataManager.item = {};
+    this.modalEditForm.isNewItem = true;
     this.modalEditForm.open();
   }
 
   updateItem() {
     this.dataManager.item = Object.assign({}, this._item);
+    this.modalEditForm.isNewItem = false;
     this.modalEditForm.open();
   }
 

@@ -11,6 +11,7 @@ export function getColumnsPlayers(): Column[] {
       width: 100,
       formHidden: true,
       type: 'number',
+      isPrimaryKey: true,
     },
     {
       title: 'Name',
@@ -19,7 +20,7 @@ export function getColumnsPlayers(): Column[] {
       filter: true,
       frozen: true,
       width: 200,
-      validation: {required: true, pattern: '^[a-zA-Z ]+$'},
+      validation: {required: true, minLength: 2, pattern: '^[a-zA-Z ]+$'},
       editable: true,
     },
     {
@@ -32,6 +33,7 @@ export function getColumnsPlayers(): Column[] {
         {id: 'ASMODIANS', name: 'ASMODIANS'},
         {id: 'ELYOS', name: 'ELYOS'},
       ],
+      validation: {required: true},
       editable: true,
     },
     {
@@ -69,7 +71,7 @@ export function getColumnsPlayers(): Column[] {
       sortable: true,
       filter: true,
       type: 'number',
-      validation: {required: true, minLength: 2, maxLength: 10},
+      validation: {required: true, maxLength: 10, pattern: '^[0-9]+$'},
       editable: true,
     },
     {
@@ -80,7 +82,14 @@ export function getColumnsPlayers(): Column[] {
       type: 'datetime-local',
       editable: true,
     },
-    {title: 'Account name', name: 'account_name', editable: true},
+    {
+      title: 'Account name',
+      name: 'account_name',
+      editable: true,
+      type: 'select-popup',
+      optionsUrl: 'assets/accounts.json',
+      keyColumn: 'account_id',
+    },
     {title: 'Account id', name: 'account_id', editable: true},
     {title: 'Player class', name: 'player_class', editable: true},
     {

@@ -22,15 +22,6 @@ export interface SortMeta {
   order: number;
 }
 
-export interface MenuItem {
-  label?: string;
-  icon?: string;
-  command?: string;
-  url?: string;
-  routerLink?: any;
-  disabled?: boolean;
-}
-
 export interface TreeNode {
   id: string;
   name: string;
@@ -40,7 +31,7 @@ export interface TreeNode {
   leaf?: boolean;
   parent?: TreeNode;
   icon?: string;
-  $$id?: string;
+  $$id?: number;
   $$filterState?: number;
   $$level?: number;
 }
@@ -61,6 +52,8 @@ export interface Row {
   $$uid: number;
   $$index: number;
   $$data: Object;
+  $$height: number;
+  $$offset: number;
 }
 
 export interface Validation {

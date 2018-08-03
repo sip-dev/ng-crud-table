@@ -1,6 +1,6 @@
 import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
-import {TreeNode, TreeDataSource} from '../../types';
-import {Column, DataTable} from '../../base';
+import {TreeNode} from '../../types';
+import {TreeTable} from '../../base';
 import {translate} from '../../base/util';
 
 @Component({
@@ -9,39 +9,63 @@ import {translate} from '../../base/util';
 })
 export class TreeTableNodeComponent implements OnInit {
 
-  @Input() public table: DataTable;
-  @Input() public nodes: TreeNode[];
-  @Input() public service: TreeDataSource;
-  @Input() public columns: Column[];
+  @Input() public treeTable: TreeTable;
+  @Input() public node: TreeNode;
+  @Input() public parentNode: TreeNode;
   @Input() public level: number = 0;
   @Output() requestNodes: EventEmitter<TreeNode> = new EventEmitter();
-  @Output() editComplete: EventEmitter<any> = new EventEmitter();
 
-  loading: boolean = false;
+  public loading: boolean = false;
 
   constructor() {
   }
 
   ngOnInit() {
+    if (!this.node.$$id) {
+      this.node.$$id = this.treeTable.sequence.getUidRow();
+    }
+    if (!this.node.$$level) {
+      this.node.$$level = (this.parentNode) ? this.parentNode.$$level + 1 : 0;
+    }
+    if (!this.node.parent) {
+      this.node.parent = this.parentNode;
+    }
   }
 
   isLeaf(node: TreeNode) {
     return node.leaf === false ? false : !(node.children && node.children.length);
   }
 
+  isSelected(node: TreeNode) {
+    return (this.treeTable.selectedNode && this.treeTable.selectedNode.$$id === node.$$id);
+  }
+
+  onSelectNode(node: TreeNode) {
+    if (this.treeTable.selectedNode !== node) {
+      this.treeTable.selectedNode = node;
+      this.treeTable.events.onSelectionChange();
+    }
+  }
+
   onExpand(node: TreeNode) {
     node.expanded = !node.expanded;
-    if (node.expanded && (!node.children || node.children.length === 0) && node.leaf === false) {
-      if (this.service) {
+    if (node.expanded) {
+      this.loadNode(node);
+    }
+  }
+
+  loadNode(node: TreeNode) {
+    if ((!node.children || node.children.length === 0) && node.leaf === false) {
+      if (this.treeTable.service) {
         this.loading = true;
-        this.service.getNodes(node).then(data => {
+        this.treeTable.service.getNodes(node).then(data => {
           if (data && data.length) {
             data.forEach(n => {
-              n.data.$$index = this.table.sequence.getUidRow();
+              n.data.$$index = this.treeTable.sequence.getUidRow();
             });
           }
-          node.children = data;
           this.loading = false;
+          this.treeTable.addNode(node.$$id, data);
           this.requestNodes.emit(node);
         }).catch(err => {
           this.loading = false;
@@ -56,7 +80,7 @@ export class TreeTableNodeComponent implements OnInit {
 
   getIcon(node: TreeNode) {
     let icon: string;
-    if (this.loading) {
+    if (this.loading && !this.isLeaf(node)) {
       return 'icon-collapsing';
     }
     if (!this.isLeaf(node) && node.expanded) {
@@ -68,11 +92,7 @@ export class TreeTableNodeComponent implements OnInit {
   }
 
   stylesByGroup() {
-    return translate(this.table.offsetX, 0);
-  }
-
-  onCellEditComplete(event) {
-    this.editComplete.emit(event);
+    return translate(this.treeTable.dimensions.offsetX, 0);
   }
 
 }
