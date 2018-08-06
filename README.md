@@ -141,6 +141,29 @@ export class DataTableDemoComponent {
   }
 }
 ```
+### Sample tree-table
+```typescript
+import {TreeDataSource, Column, Settings, TreeTable} from '../ng-tree-table';
+
+@Component({
+  selector: 'app-tree-table-demo',
+  template: `<app-tree-table [treeTable]="treeTable"></app-tree-table>`
+})
+
+export class TreeTableDemoComponent {
+
+  public treeService: TreeDataSource;
+  public treeTable: TreeTable;
+  public settings: Settings;
+  public columns: Column[];
+
+  constructor() {
+    this.treeService = new TreeDemoService(this.http);
+    this.treeTable = new TreeTable(this.columns, this.settings, this.treeService);
+  }
+}
+```
+
 
 ## Features
 * Filtering (column filters and an optional global filter)
@@ -231,7 +254,7 @@ interface DataSource {
 | filterDelay      | number     | 500     |             |
 | globalFilter     | boolean    | false   |             |
 | columnResizeMode | simple / aminated | simple |       |
-| selectionType    | single / multiple | single |       |
+| selectionMultiple | boolean   | false   |             |
 | selectionMode    | checkbox / radio | null |          |
 | singleRowView    | boolean    | true    |             |
 | virtualScroll    | boolean    | false   |             |
@@ -270,7 +293,7 @@ private subscriptions: Subscription[] = [];
 
   ngOnInit() {
     const subSelection = this.table.events.selectionSource$.subscribe(() => {
-      this.table.selection.getSelection();
+      this.table.getSelection();
     });
     this.subscriptions.push(subSelection);
   }

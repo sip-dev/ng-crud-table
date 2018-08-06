@@ -26,12 +26,12 @@ export class MultipleSelectionDemoComponent implements OnInit {
   public selectedRows2: any[];
 
   public settings: Settings = <Settings>{
-    selectionType: 'multiple',
+    selectionMultiple: true,
     selectionMode: 'checkbox',
   };
 
   public settings2: Settings = <Settings>{
-    selectionType: 'multiple',
+    selectionMultiple: true,
     selectionMode: 'radio',
   };
 
@@ -55,11 +55,11 @@ export class MultipleSelectionDemoComponent implements OnInit {
   }
 
   onSelection() {
-    this.selectedRows = this.table.selection.getSelectedRows(this.table.rows);
+    this.selectedRows = this.table.getSelection();
   }
 
   onSelection2() {
-    this.selectedRows2 = this.table2.selection.getSelectedRows(this.table2.rows);
+    this.selectedRows2 = this.table2.getSelection();
   }
 
   clearSelection() {
