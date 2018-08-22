@@ -9,6 +9,7 @@ import { PageNotFoundComponent} from './not-found.component';
 import { CrudTableModule } from '../ng-crud-table';
 import { DataTableModule } from '../ng-data-table';
 import { TreeTableModule } from '../ng-tree-table';
+import { ToolbarModule } from '../lib/toolbar/toolbar-module';
 import { BasicDemoComponent } from './demo/basic-demo.component';
 import { TreeTableDemoComponent } from './demo/tree-table-demo.component';
 import { DataTableDemoComponent } from './demo/data-table-demo.component';
@@ -29,6 +30,7 @@ import { CssDemoComponent } from './demo/css-demo.component';
 import { HeaderDemoComponent } from './demo/header-demo.component';
 import { TemplateDemoComponent } from './demo/template-demo.component';
 import { EventsDemoComponent } from './demo/events-demo.component';
+import { VerticalGroupDemoComponent } from './demo/vertical-group-demo.component';
 
 const ROUTES: Routes = [
   {path: '', component: BasicDemoComponent},
@@ -52,6 +54,7 @@ const ROUTES: Routes = [
   {path: 'header-demo', component: HeaderDemoComponent},
   {path: 'template-demo', component: TemplateDemoComponent},
   {path: 'events-demo', component: EventsDemoComponent},
+  {path: 'vertical-group-demo', component: VerticalGroupDemoComponent},
   {path: '**', component: PageNotFoundComponent},
 ];
 
@@ -78,7 +81,8 @@ const ROUTES: Routes = [
     CssDemoComponent,
     HeaderDemoComponent,
     TemplateDemoComponent,
-    EventsDemoComponent
+    EventsDemoComponent,
+    VerticalGroupDemoComponent
   ],
   imports: [
     BrowserModule,
@@ -88,6 +92,7 @@ const ROUTES: Routes = [
     CrudTableModule,
     DataTableModule,
     TreeTableModule,
+    ToolbarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
